@@ -68,14 +68,6 @@
 
 ---
 
-## 📅 開發里程碑 (Roadmap)
-- [x] 2026/04：完成系統架構設計與初步技術驗證
-- [ ] 2026/06：整合 SAM 2 與 MDM 微調模型
-- [ ] 2026/10：開發網頁端直覺操作介面
-- [ ] 2027/04：最終成果展示與性能測試
-
----
-
 ### 📖 參考文獻
 1. N. Ravi et al., "SAM 2: Segment Anything in Images and Videos," 2024.
 2. G. Tevet et al., "Human motion diffusion model," 2022.
