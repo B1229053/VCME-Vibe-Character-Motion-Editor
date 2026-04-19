@@ -1,74 +1,82 @@
 # VCME: Vibe Character Motion Editor
 ### 自然語言驅動之影片人物動作編輯系統
-**National Chi Nan University - Dept. of CSIE**
+**國立暨南國際大學資訊工程學系 - 軟硬體專題**
 
 ---
 
 ## 👥 團隊成員 (Team Members)
 
-* [cite_start]**指導教授：** 陳仁暉 教授 [cite: 3]
+* **指導教授：** 陳仁暉 教授
 * **專題成員：**
-    * [cite_start]顏羽婕 (B1229xxx) [cite: 2]
-    * [cite_start]黃靖芳 (B1229xxx) [cite: 2]
-    * [cite_start]洪碩廷 (B1229xxx) [cite: 2]
-    * [cite_start]彭暉紘 (B1229xxx) [cite: 2]
-    * [cite_start]王俊傑 (B1229xxx) [cite: 2]
+    * 顏羽婕 (學號)
+    * 黃靖芳 (學號)
+    * 洪碩廷 (學號)
+    * 彭暉紘 (學號)
+    * 王俊傑 (學號)
 
 ---
 
 ## 1. 系統簡介 (System Overview)
 
-[cite_start]本系統 **VCME** 旨在提供一套直覺、低門檻的影片動作編輯平台 [cite: 1, 13][cite_start]。透過自然語言指令與多模態 AI 技術，使用者無需專業動態捕捉設備，即可對影片中特定人物進行精準的動作重塑與編輯 [cite: 7, 9, 13]。
+本系統 **VCME** 旨在實現「自然語言驅動」的影片動作編輯。使用者只需簡單點選影片中的目標人物並輸入文字指令（如「讓他跳舞」），系統即可在不使用昂貴動態捕捉設備的情況下，精準重塑人物動作。
 
 ### 1.1 研發目標
-* [cite_start]**直覺化操作：** 實現以文字指令驅動的人物動作修改 [cite: 9, 13]。
-* [cite_start]**高保真重塑：** 確保編輯後的動作符合人體關節層級與物理邏輯 [cite: 29, 43, 46]。
-* [cite_start]**影片穩定性：** 解決 AI 生成影片常見的畫面扭曲與不自然的問題 [cite: 12, 21, 64]。
+* **直覺化操作：** 點選目標人物並輸入指令，即可完成編輯。
+* **高保真動作重塑：** 確保編輯後的骨架符合人體物理邏輯，避免肢體斷裂。
+* **影片穩定性：** 解決傳統 AI 編輯時常見的畫面扭曲與不自然現象。
 
 ### 1.2 技術範圍 (Scope)
-[cite_start]本系統涵蓋以下核心技術模組 [cite: 17]：
-* [cite_start]**目標分離模組：** 利用 **SAM 2** 進行人物 Mask 提取與長效時序追蹤 [cite: 19, 21, 24]。
-* [cite_start]**動作重塑模組：** 結合 **AniMo** 與 **MDM**，將骨架視為「樹狀結構」編碼 [cite: 26, 29, 30, 40]。
-* [cite_start]**畫面合成模組：** 透過 **ComfyUI** 節點與 **ControlNet** 進行深度感知渲染 [cite: 54, 59, 60]。
+本系統整合以下核心模組：
+* **目標分離模組：** 使用 **SAM 2** 提取人物 Mask 並維持長效時序追蹤。
+* **動作編輯模組：** 結合 **AniMo** 與 **MDM** 模型，將骨架以「樹狀結構」重塑。
+* **畫面合成模組：** 透過 **ComfyUI** 與 **ControlNet** 確保人物與背景完美融合。
 
 ---
 
 ## 2. 系統架構 (System Architecture)
 
 ### Layer 1：感知與分離層 (Perception Layer)
-* [cite_start]**SAM 2 Segmentation：** 使用者點選目標，生成精準的人物遮罩與時序記憶 [cite: 20, 22]。
-* [cite_start]**Pose Estimation：** 提取原始人物的 3D 骨架資訊作為編輯基準 [cite: 23]。
+* **SAM 2 Segmentation：** 實現精準的人物分割與記憶機制，應對旋轉或遮擋。
+* **Pose Estimation：** 提取原始人物 3D 骨架，作為動作編輯的基礎。
 
 ### Layer 2：核心推論層 (Inference Layer)
-* [cite_start]**AniMo Framework：** 提供具備物理層級的關節感知編碼 [cite: 29, 37, 52]。
-* [cite_start]**MDM (Diffusion)：** 根據文字 Prompt 生成高質量的動作數據 [cite: 28, 51]。
-* [cite_start]**Skeleton Mapping：** 將生成動作映射至原始人物骨架空間 [cite: 30, 49]。
+* **AniMo Framework：** 引入「關節感知時空編碼」，讓動作調整符合人體結構。
+* **MDM (Diffusion)：** 根據指令生成流暢且高品質的 3D 動作序列。
+* **Skeleton Mapping：** 將新生成的動作精準對應至原始影片人物空間。
 
 ### Layer 3：渲染合成層 (Rendering Layer)
-* [cite_start]**Spatial Control：** 利用 Depth Map 確保人物動作與背景物件無穿模 [cite: 57, 62]。
-* [cite_start]**Temporal Stability：** 透過時序優化算法，維持幀與幀之間的穩定度 [cite: 64]。
+* **Spatial Control：** 利用 Depth Map 確保人物動作與背景物件（如沙發）無穿模。
+* **Temporal Stability：** 透過時序優化算法維持幀與幀之間的穩定度。
 
 ---
 
 ## 3. 系統特點 (Key Features)
 
 1. **關節感知時空編碼 (Joint-Aware Encoding)**
-   * [cite_start]不同於傳統 1D 向量編輯，我們將骨架視為「樹狀結構」，確保符合人體邏輯（如肩膀帶動手肘） [cite: 29, 40, 43]。
-2. **多模態語義對齊**
-   * [cite_start]精準對齊文字指令與 3D 動作數據，實現「自然語言驅動」 [cite: 1, 9, 28]。
-3. **物理衝突檢測**
-   * [cite_start]內建空間幾何判定機制，避免修改後的動作產生穿模或斷裂現象 [cite: 12, 46, 62]。
+   * 不同於傳統 1D 向量編輯，本系統將骨架視為「樹狀結構」，強化關節物理聯繫。
+2. **物理衝突檢測**
+   * 內建幾何判定機制，避免修改後的動作與背景產生穿模或肢體異常旋轉。
+3. **高效渲染整合**
+   * 整合 ControlNet (Canny/Depth) 提取細節，保留人物服裝與五官輪廓。
 
 ---
 
 ## 4. 系統限制 (Limitations)
 
-* [cite_start]**時長限制：** 目前優化目標為 3 秒內的短影片，以維持生成品質的一致性 [cite: 11]。
-* [cite_start]**環境限制：** 極度複雜的背景或短暫遮擋仍需仰賴 SAM 2 的記憶機制穩定度 [cite: 22]。
+* **短影片優化：** 目前主要支持 3 秒內的影片動作修改，以維持最高品質。
+* **環境依賴：** 極端複雜的背景或持續遮擋可能影響 SAM 2 的追蹤精度。
+
+---
+
+## 📅 開發里程碑 (Roadmap)
+- [x] 2026/04：完成系統架構設計與初步技術驗證
+- [ ] 2026/06：整合 SAM 2 與 MDM 微調模型
+- [ ] 2026/10：開發網頁端直覺操作介面
+- [ ] 2027/04：最終成果展示與性能測試
 
 ---
 
 ### 📖 參考文獻
-1. [cite_start]N. Ravi et al., "SAM 2: Segment Anything in Images and Videos," arXiv preprint arXiv:2408.00714, 2024. [cite: 24]
-2. [cite_start]G. Tevet et al., "Human motion diffusion model," arXiv preprint arXiv:2209.14916, 2022. [cite: 51]
-3. [cite_start]Wang et al., "AniMo: Species-Aware Model for Text-Driven Animal Motion Generation," CVPR, 2024. [cite: 52]
+1. N. Ravi et al., "SAM 2: Segment Anything in Images and Videos," 2024.
+2. G. Tevet et al., "Human motion diffusion model," 2022.
+3. Wang et al., "AniMo: Species-Aware Model for Text-Driven Animal Motion Generation," CVPR, 2024.
