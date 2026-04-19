@@ -1,5 +1,6 @@
 # VCME: Vibe Character Motion Editor
 ### 自然語言驅動之影片人物動作編輯系統
+**National Chi Nan University - Dept. of CSIE**
 
 ---
 
@@ -25,7 +26,7 @@
 * [cite_start]**影片穩定性：** 解決 AI 生成影片常見的畫面扭曲與不自然的問題 [cite: 12, 21, 64]。
 
 ### 1.2 技術範圍 (Scope)
-本系統涵蓋以下核心技術模組：
+[cite_start]本系統涵蓋以下核心技術模組 [cite: 17]：
 * [cite_start]**目標分離模組：** 利用 **SAM 2** 進行人物 Mask 提取與長效時序追蹤 [cite: 19, 21, 24]。
 * [cite_start]**動作重塑模組：** 結合 **AniMo** 與 **MDM**，將骨架視為「樹狀結構」編碼 [cite: 26, 29, 30, 40]。
 * [cite_start]**畫面合成模組：** 透過 **ComfyUI** 節點與 **ControlNet** 進行深度感知渲染 [cite: 54, 59, 60]。
