@@ -1,6 +1,5 @@
 # VCME: Vibe Character Motion Editor
 ### 自然語言驅動之影片人物動作編輯系統
-**國立暨南國際大學資訊工程學系 - 軟硬體專題**
 
 ---
 
