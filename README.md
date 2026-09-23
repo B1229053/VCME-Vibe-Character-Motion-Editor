@@ -7,6 +7,113 @@ VCME（Vibe Character Motion Editor）是一套以大型 AI 模型為基礎的�
 
 本專題重點不在重新訓練大型模型，而是設計一套可落地實作、可追溯、可版本管理的 AI 影片人物編輯流程與系統架構。
 
+<!-- BEGIN ADDED RESULTS -->
+## Video Results｜影片成果與 VACE 比較
+
+[主要成果](#main-result) · [VACE 與我們的影片比較](#vace-comparison) · [最新實驗流程](#current-workflow) · [原始系統設計](#system-architecture)
+
+本區新增目前的影片成果與實驗流程；後方原始 README 的架構圖片、系統設計、UML、API 規劃與團隊資訊完整保留。原始模型組合屬於先前設計，以下 V40／V57 說明對應目前展示的實驗版本。
+
+<a id="main-result"></a>
+### Main Result · 我們的主成果 V40
+
+<p align="center">
+  <a href="videos/01_主要成果/01_V40_StoryMem_Wan22_主成果_動作最佳基準.mp4"><img src="assets/previews/ours-v40.gif" width="336" alt="我們的 V40 主成果：StoryMem + Wan2.2 動態預覽"></a>
+</p>
+<p align="center"><strong>Ours · StoryMem + Wan2.2 · V40</strong><br><a href="videos/01_主要成果/01_V40_StoryMem_Wan22_主成果_動作最佳基準.mp4">▶ 觀看完整影片</a></p>
+
+<a id="vace-comparison"></a>
+### Qualitative Comparison · 原片、VACE 與我們的成果
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">Input · 原始影片</th>
+      <th align="center">VACE · ContextBridge V31</th>
+      <th align="center">Ours · V40</th>
+      <th align="center">Ours · V57</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><a href="videos/00_原始影片/00_原始影片.mp4"><img src="assets/previews/input.gif" width="220" alt="原始影片動態預覽"></a></td>
+      <td align="center"><a href="videos/PLAY_THIS_VACE_ContextBridge_v31.mp4"><img src="assets/previews/vace-v31.gif" width="220" alt="VACE ContextBridge V31 動態預覽"></a></td>
+      <td align="center"><a href="videos/01_主要成果/01_V40_StoryMem_Wan22_主成果_動作最佳基準.mp4"><img src="assets/previews/ours-v40.gif" width="220" alt="我們的 V40 動態預覽"></a></td>
+      <td align="center"><a href="videos/03_外部修復研究/01_V57_V40人物加外部光流背景修復_非重新生成.mp4"><img src="VCME_GitHub_上傳資料/assets/previews/v57.gif" width="220" alt="我們的 V57 背景修復動態預覽"></a></td>
+    </tr>
+    <tr>
+      <td align="center">編輯前的輸入</td>
+      <td align="center">本地 VACE 對照版本</td>
+      <td align="center">StoryMem + Wan2.2</td>
+      <td align="center">V40 人物 + 外部光流背景修復</td>
+    </tr>
+    <tr>
+      <td align="center"><a href="videos/00_原始影片/00_原始影片.mp4">▶ 完整原片</a></td>
+      <td align="center"><a href="videos/PLAY_THIS_VACE_ContextBridge_v31.mp4">▶ VACE 完整影片</a></td>
+      <td align="center"><a href="videos/01_主要成果/01_V40_StoryMem_Wan22_主成果_動作最佳基準.mp4">▶ V40 完整影片</a></td>
+      <td align="center"><a href="videos/03_外部修復研究/01_V57_V40人物加外部光流背景修復_非重新生成.mp4">▶ V57 完整影片</a></td>
+    </tr>
+  </tbody>
+</table>
+
+GIF 會循環播放，點擊可開啟完整 MP4。所有預覽統一以 10 fps、相同寬度製作，保留原播放速度；個別 GIF 不保證逐格同步，精細畫質與流暢度請以 MP4 為準。
+
+| 比較版本 | 方法與定位 | 觀察重點 |
+| --- | --- | --- |
+| Input | 原始影片 | 人物外觀、原始動作與場景 |
+| VACE · V31 | 本地 ContextBridge 對照版本 | 動作表現、外觀保留與背景變化 |
+| Ours · V40 | StoryMem + Wan2.2，主要生成成果 | 人物動作、身份與服裝保留、時間連續性 |
+| Ours · V57 | 沿用 V40 人物，加入外部光流背景修復，非重新生成 | 背景穩定性、人物邊界與修復痕跡 |
+
+VACE 欄使用本地 `PLAY_THIS_VACE_ContextBridge_v31.mp4` 的副本，不是官方示範片或官方 benchmark 成績；方法來源可參考 [VACE 官方專案](https://github.com/ali-vilab/VACE)。目前未附各版本完整 prompt、seed、遮罩與推論設定，此處為定性影片比較，不宣稱已在相同條件下優於 VACE。
+
+<a id="current-workflow"></a>
+### Current Workflow · 最新實驗流程補充
+
+下圖呈現目前成果檔案可確認的版本關係：V40 為 StoryMem + Wan2.2 主成果，V57 則沿用 V40 人物進行背景修復。完整模型接線與條件輸入仍應以實作設定為準。
+
+```mermaid
+flowchart LR
+    Generation["StoryMem + Wan2.2"] --> V40["V40：主要生成成果"]
+    V40 --> Repair["沿用 V40 人物<br/>外部光流背景修復"]
+    Repair --> V57["V57：修復後成果<br/>非重新生成"]
+    Input["原始影片"] --> Compare["定性影片比較"]
+    VACE["VACE ContextBridge V31"] --> Compare
+    V40 --> Compare
+    V57 --> Compare
+```
+
+### Demo Assets · 新增展示檔案
+
+```text
+assets/previews/              # 首頁動態預覽
+├── input.gif
+├── vace-v31.gif
+└── ours-v40.gif
+VCME_GitHub_上傳資料/assets/previews/
+└── v57.gif                   # 沿用目前已上傳的位置
+videos/                       # 完整影片沿用既有位置
+├── 00_原始影片/00_原始影片.mp4
+├── PLAY_THIS_VACE_ContextBridge_v31.mp4
+├── 01_主要成果/01_V40_StoryMem_Wan22_主成果_動作最佳基準.mp4
+└── 03_外部修復研究/01_V57_V40人物加外部光流背景修復_非重新生成.mp4
+```
+
+本頁預覽沿用 repository 現有的檔名與位置。更新時只需替換根目錄的 `Readme.md`；請保留 `assets/previews/`、`VCME_GitHub_上傳資料/assets/previews/`、`videos/` 與 `docs/`。
+
+### Available Documents · 現有專題文件
+
+- [第一次書面報告](VCME_GitHub_上傳資料/VCME-第一次書面報告.pdf)
+- [第二次書面報告](VCME_GitHub_上傳資料/VCME-第二次書面報告.pdf)
+- [完整系統分析與設計文件](VCME_GitHub_上傳資料/VCME_自然語言影片人物動作編輯系統：完整系統分析與設計文件.pdf)
+- [VCME 詞彙表](VCME_GitHub_上傳資料/VCME詞彙表.pdf)
+
+原始 README 下方引用的 `VCME-signed(2).pdf` 未包含在目前 repository；原文連結保留，現有文件可從上方開啟。
+
+---
+
+<!-- END ADDED RESULTS -->
+
 ![VCME System Architecture](docs/figures/system-architecture.jpg)
 
 ## Table of Contents
@@ -400,22 +507,3 @@ VCME 預期能展示一套完整的自然語言影片人物動作編輯流程：
 - Weng et al., **VIRES**, CVPR 2025.
 - Yu et al., **ObjectMover**, CVPR 2025.
 
-## Team Members
-
-指導教授：
-
-- 陳仁暉 教授
-
-專題成員：
-
-- 洪碩廷
-- 顏羽婕
-- 黃靖芳
-- 彭暉紘
-- 王俊傑
-
-## Project Document
-
-完整專題設計簡報請參考：
-
-- [`VCME-signed(2).pdf`](VCME-signed(2).pdf)
